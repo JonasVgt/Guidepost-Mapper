@@ -17,6 +17,7 @@ import org.osmdroid.views.MapView
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        org.osmdroid.config.Configuration.getInstance().userAgentValue  = applicationContext.packageName
         setContent {
             GuidepostMapperTheme {
                 // A surface container using the 'background' color from the theme
@@ -37,7 +38,7 @@ fun OsmMapView(modifier: Modifier = Modifier) {
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
             MapView(context).apply {
-                setTileSource(TileSourceFactory.USGS_TOPO)
+                setTileSource(TileSourceFactory.MAPNIK)
                 setMultiTouchControls(true)
 
             }
