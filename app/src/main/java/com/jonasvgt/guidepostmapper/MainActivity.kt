@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +66,7 @@ fun OsmMapView(modifier: Modifier = Modifier) {
             MapView(context).apply {
                 setTileSource(TileSourceFactory.MAPNIK)
                 setMultiTouchControls(true)
-
+                overlays.add(MyLocationNewOverlay(this).apply { enableMyLocation() })
             }
         }
     )
