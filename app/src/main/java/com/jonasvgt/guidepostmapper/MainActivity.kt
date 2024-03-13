@@ -3,14 +3,18 @@ package com.jonasvgt.guidepostmapper
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.webkit.PermissionRequest
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,12 +32,13 @@ class MainActivity : ComponentActivity() {
         org.osmdroid.config.Configuration.getInstance().userAgentValue  = applicationContext.packageName
         setContent {
             GuidepostMapperTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    OsmMapView()
+                Scaffold (
+                    floatingActionButton = {
+                        FabToMyLocation()
+                    }
+                )
+                {
+                    innerPadding -> OsmMapView(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -73,6 +78,16 @@ fun OsmMapView(modifier: Modifier = Modifier) {
             }
         }
     )
+}
+
+@Composable
+fun FabToMyLocation(){
+    FloatingActionButton(
+        onClick = { /*TODO*/ },
+        shape = CircleShape,
+    ) {
+        Icon(Icons.Filled.LocationOn, "Return to my location.")
+    }
 }
 
 @Preview(showBackground = true)
