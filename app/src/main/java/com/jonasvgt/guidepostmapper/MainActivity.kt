@@ -18,6 +18,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
@@ -67,6 +68,8 @@ fun OsmMapView(modifier: Modifier = Modifier) {
                 setTileSource(TileSourceFactory.MAPNIK)
                 setMultiTouchControls(true)
                 overlays.add(MyLocationNewOverlay(this).apply { enableMyLocation() })
+                controller.setZoom(9.5)
+                controller.setCenter(GeoPoint(48.8583, 2.2944))
             }
         }
     )
