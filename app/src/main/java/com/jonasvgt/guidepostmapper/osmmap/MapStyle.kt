@@ -8,7 +8,8 @@ class MapStyle(val name: String, val tileSource: OnlineTileSourceBase = TileSour
     companion object {
         val DEFAULT: MapStyle = MapStyle(name="Default", TileSourceFactory.MAPNIK)
         val HIKING: MapStyle = MapStyle(name="Hiking",tileSource = TileSourceFactory.HIKEBIKEMAP)
-        val ALL = arrayOf(this.DEFAULT, this.HIKING)
+        val TOPO: MapStyle = MapStyle(name="Topographical",tileSource = TileSourceFactory.OpenTopo)
+        val ALL = arrayOf(this.DEFAULT, this.HIKING, this.TOPO)
     }
 
 }
