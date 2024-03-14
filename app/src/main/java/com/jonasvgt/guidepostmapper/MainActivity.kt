@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -16,29 +15,44 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
+import org.osmdroid.api.IGeoPoint
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         org.osmdroid.config.Configuration.getInstance().userAgentValue  = applicationContext.packageName
+        val locationManager = GpsMyLocationProvider(this)
         setContent {
+            var mapCenter by remember { mutableStateOf<IGeoPoint>(GeoPoint(48.8583, 2.2944)) }
             GuidepostMapperTheme {
                 Scaffold (
                     floatingActionButton = {
-                        FabToMyLocation()
+                        FabToMyLocation(onClick = {
+                            val loc = locationManager.lastKnownLocation
+                            if(loc == null){
+                                Toast.makeText(this, "No Last Location", Toast.LENGTH_SHORT).show()
+                            }else{
+                                mapCenter = GeoPoint(loc)
+                            }
+
+                        })
                     }
                 )
                 {
-                    innerPadding -> OsmMapView(modifier = Modifier.padding(innerPadding))
+                    innerPadding -> OsmMapView(mapCenter, locationManager, onMapCenterChanged = {newMapCenter -> mapCenter = newMapCenter }, modifier = Modifier.padding(innerPadding))
                 }
             }
         }
@@ -65,35 +79,32 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun OsmMapView(modifier: Modifier = Modifier) {
+fun OsmMapView(mapCenter : IGeoPoint, locationManager: GpsMyLocationProvider , onMapCenterChanged: (IGeoPoint) -> Unit, modifier: Modifier = Modifier) {
+
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         factory = { context ->
             MapView(context).apply {
                 setTileSource(TileSourceFactory.MAPNIK)
                 setMultiTouchControls(true)
-                overlays.add(MyLocationNewOverlay(this).apply { enableMyLocation() })
+                overlays.add(MyLocationNewOverlay(locationManager, this).apply { enableMyLocation() })
                 controller.setZoom(9.5)
-                controller.setCenter(GeoPoint(48.8583, 2.2944))
+                controller.setCenter(mapCenter)
             }
+        },
+        update = {
+            it.controller.setCenter(mapCenter)
+            onMapCenterChanged(it.mapCenter)
         }
     )
 }
 
 @Composable
-fun FabToMyLocation(){
+fun FabToMyLocation(onClick : () -> Unit ){
     FloatingActionButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = CircleShape,
     ) {
         Icon(Icons.Filled.LocationOn, "Return to my location.")
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun OsmMapViewPreview() {
-    GuidepostMapperTheme {
-        OsmMapView()
     }
 }
