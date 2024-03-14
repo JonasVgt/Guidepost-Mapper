@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
-import com.jonasvgt.guidepostmapper.ui.mapsource.FabMapSource
+import com.jonasvgt.guidepostmapper.ui.mapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
 import org.osmdroid.util.GeoPoint
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
-                        FabMapSource(onClick = { showBottomSheet = true })
+                        FabMapStyle(onClick = { showBottomSheet = true })
                         Spacer(modifier = Modifier.height(20.dp))
                         FabToMyPosition(onClick = {
                             val loc = locationManager.lastKnownLocation

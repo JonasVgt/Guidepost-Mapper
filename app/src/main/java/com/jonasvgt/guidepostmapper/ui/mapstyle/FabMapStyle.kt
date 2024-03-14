@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.ui.mapsource
+package com.jonasvgt.guidepostmapper.ui.mapstyle
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -8,7 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 
 @Composable
-fun FabMapSource(onClick: () -> Unit) {
+fun FabMapStyle(onClick: () -> Unit) {
     FloatingActionButton(
         onClick = onClick,
         shape = CircleShape,
