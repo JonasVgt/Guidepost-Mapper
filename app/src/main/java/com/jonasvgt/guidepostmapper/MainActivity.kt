@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -38,6 +37,7 @@ import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
+import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                     Column {
                         FabToMapSource(onClick = { showBottomSheet = true })
                         Spacer(modifier = Modifier.height(20.dp))
-                        FabToMyLocation(onClick = {
+                        FabToMyPosition(onClick = {
                             val loc = locationManager.lastKnownLocation
                             if (loc == null) {
                                 //Toast.makeText(this, "No Last Location", Toast.LENGTH_SHORT).show()
@@ -126,15 +126,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-@Composable
-fun FabToMyLocation(onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = onClick,
-        shape = CircleShape,
-    ) {
-        Icon(Icons.Filled.LocationOn, "Return to my location.")
-    }
-}
+
 
 @Composable
 fun FabToMapSource(onClick: () -> Unit) {
