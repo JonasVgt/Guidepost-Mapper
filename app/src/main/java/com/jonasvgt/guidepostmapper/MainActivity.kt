@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
@@ -46,7 +45,6 @@ class MainActivity : ComponentActivity() {
             applicationContext.packageName
         val locationManager = GpsMyLocationProvider(this)
         val mapView = MapView(this).apply {
-            setTileSource(TileSourceFactory.MAPNIK)
             setMultiTouchControls(true)
             overlays.add(MyLocationNewOverlay(locationManager, this).apply { enableMyLocation() })
             controller.setZoom(9.5)
