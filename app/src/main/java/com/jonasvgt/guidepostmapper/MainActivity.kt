@@ -20,15 +20,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import org.osmdroid.api.IGeoPoint
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,26 +75,6 @@ class MainActivity : ComponentActivity() {
 
 }
 
-@Composable
-fun OsmMapView(mapCenter : IGeoPoint, locationManager: GpsMyLocationProvider , onMapCenterChanged: (IGeoPoint) -> Unit, modifier: Modifier = Modifier) {
-
-    AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            MapView(context).apply {
-                setTileSource(TileSourceFactory.MAPNIK)
-                setMultiTouchControls(true)
-                overlays.add(MyLocationNewOverlay(locationManager, this).apply { enableMyLocation() })
-                controller.setZoom(9.5)
-                controller.setCenter(mapCenter)
-            }
-        },
-        update = {
-            it.controller.setCenter(mapCenter)
-            onMapCenterChanged(it.mapCenter)
-        }
-    )
-}
 
 @Composable
 fun FabToMyLocation(onClick : () -> Unit ){
