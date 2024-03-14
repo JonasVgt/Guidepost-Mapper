@@ -7,20 +7,13 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
+import com.jonasvgt.guidepostmapper.ui.mapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.ui.mapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
@@ -54,7 +48,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
-                val sheetState = rememberModalBottomSheetState()
                 var mapStyle by remember { mutableStateOf(MapStyle.DEFAULT) }
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
@@ -74,26 +67,12 @@ class MainActivity : ComponentActivity() {
 
                 }) { innerPadding ->
                     OsmMapView(mapView, style = mapStyle, modifier = Modifier.padding(innerPadding))
-                    if (showBottomSheet) {
-                        ModalBottomSheet(
-                            onDismissRequest = {
-                                showBottomSheet = false
-                            },
-                            sheetState = sheetState
-                        ) {
-                            LazyColumn {
-                                itemsIndexed(MapStyle.ALL) { _, item ->
-                                    Spacer(modifier = Modifier.height(20.dp))
-                                    Text(
-                                        item.name,
-                                        modifier = Modifier.clickable { mapStyle = item })
-                                    Spacer(modifier = Modifier.height(20.dp))
-                                    Divider()
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(40.dp))
-                        }
-                    }
+                    BottomSheetSelectMapStyle(
+                        show = showBottomSheet,
+                        onDismissRequest = { showBottomSheet = false },
+                        onMapStyleSelected = { newStyle ->
+                            mapStyle = newStyle; showBottomSheet = false
+                        })
                 }
             }
         }
