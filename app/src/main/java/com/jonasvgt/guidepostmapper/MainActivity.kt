@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
                 val sheetState = rememberModalBottomSheetState()
+                var mapStyle by remember {mutableStateOf(MapStyle.DEFAULT)}
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
@@ -76,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                 }) { innerPadding ->
-                    OsmMapView(mapView, modifier = Modifier.padding(innerPadding))
+                    OsmMapView(mapView, style = mapStyle, modifier = Modifier.padding(innerPadding))
                     if (showBottomSheet) {
                         ModalBottomSheet(
                             onDismissRequest = {
@@ -87,7 +89,7 @@ class MainActivity : ComponentActivity() {
                             LazyColumn {
                                 itemsIndexed(MapStyle.ALL) { _, item ->
                                     Spacer(modifier = Modifier.height(20.dp))
-                                    Text(item.name)
+                                    Text(item.name, modifier = Modifier.clickable {  mapStyle = item})
                                     Spacer(modifier = Modifier.height(20.dp))
                                     Divider()
                                 }
