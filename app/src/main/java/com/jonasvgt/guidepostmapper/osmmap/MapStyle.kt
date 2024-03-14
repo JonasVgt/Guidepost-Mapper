@@ -8,8 +8,11 @@ class MapStyle {
     val tileSource: OnlineTileSourceBase = TileSourceFactory.MAPNIK
         get() = field
 
+    val name: String = "default"
+
     companion object {
         val DEFAULT: MapStyle = MapStyle()
+        val ALL = arrayOf(this.DEFAULT)
     }
 
 }

@@ -11,16 +11,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import org.osmdroid.util.GeoPoint
@@ -57,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
-                        FabToMapSource (onClick = {showBottomSheet = true})
+                        FabToMapSource(onClick = { showBottomSheet = true })
                         Spacer(modifier = Modifier.height(20.dp))
                         FabToMyLocation(onClick = {
                             val loc = locationManager.lastKnownLocation
@@ -79,7 +84,15 @@ class MainActivity : ComponentActivity() {
                             },
                             sheetState = sheetState
                         ) {
-
+                            LazyColumn {
+                                itemsIndexed(MapStyle.ALL) { _, item ->
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    Text(item.name)
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                    Divider()
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(40.dp))
                         }
                     }
                 }
