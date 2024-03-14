@@ -7,15 +7,21 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
@@ -40,16 +46,23 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             GuidepostMapperTheme {
-                Scaffold(floatingActionButton = {
-                    FabToMyLocation(onClick = {
-                        val loc = locationManager.lastKnownLocation
-                        if (loc == null) {
-                            Toast.makeText(this, "No Last Location", Toast.LENGTH_SHORT).show()
-                        } else {
-                            mapView.controller.animateTo(GeoPoint(loc))
-                        }
+                Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
+                    Column {
+                        FabToMapSource {
 
-                    })
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        FabToMyLocation(onClick = {
+                            val loc = locationManager.lastKnownLocation
+                            if (loc == null) {
+                                //Toast.makeText(this, "No Last Location", Toast.LENGTH_SHORT).show()
+                            } else {
+                                mapView.controller.animateTo(GeoPoint(loc))
+                            }
+
+                        })
+                    }
+
                 }) { innerPadding ->
                     OsmMapView(mapView, modifier = Modifier.padding(innerPadding))
                 }
@@ -88,5 +101,15 @@ fun FabToMyLocation(onClick: () -> Unit) {
         shape = CircleShape,
     ) {
         Icon(Icons.Filled.LocationOn, "Return to my location.")
+    }
+}
+
+@Composable
+fun FabToMapSource(onClick: () -> Unit) {
+    FloatingActionButton(
+        onClick = onClick,
+        shape = CircleShape,
+    ) {
+        Icon(Icons.Filled.List, "Select map source.")
     }
 }
