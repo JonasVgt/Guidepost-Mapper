@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.ui.osmmap.OsmMapView
-import com.jonasvgt.guidepostmapper.ui.mapstyle.BottomSheetSelectMapStyle
-import com.jonasvgt.guidepostmapper.ui.mapstyle.FabMapStyle
+import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
+import com.jonasvgt.guidepostmapper.ui.selectmapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
 import org.osmdroid.util.GeoPoint

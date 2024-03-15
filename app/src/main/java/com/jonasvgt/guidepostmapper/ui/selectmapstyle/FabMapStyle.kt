@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.ui.mapstyle
+package com.jonasvgt.guidepostmapper.ui.selectmapstyle
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
