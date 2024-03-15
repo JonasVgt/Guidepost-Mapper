@@ -30,6 +30,8 @@ import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.ItemizedIconOverlay
+import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
@@ -46,6 +48,22 @@ class MainActivity : ComponentActivity() {
             controller.setZoom(9.5)
             controller.setCenter(GeoPoint(48.8583, 2.2944))
         }
+        val items: ArrayList<OverlayItem> = ArrayList()
+        items.add(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
+        val overlay = ItemizedIconOverlay(
+            this,
+            items,
+            object : ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
+                override fun onItemSingleTapUp(index: Int, item: OverlayItem): Boolean {
+                    //do something
+                    return true
+                }
+
+                override fun onItemLongPress(index: Int, item: OverlayItem): Boolean {
+                    return false
+                }
+            })
+        mapView.overlays.add(overlay)
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
@@ -70,8 +88,7 @@ class MainActivity : ComponentActivity() {
 
                 }) { innerPadding ->
                     OsmMapView(mapView, style = mapStyle, modifier = Modifier.padding(innerPadding))
-                    BottomSheetSelectMapStyle(
-                        show = showBottomSheet,
+                    BottomSheetSelectMapStyle(show = showBottomSheet,
                         onDismissRequest = { showBottomSheet = false },
                         onMapStyleSelected = { newStyle ->
                             mapStyle = newStyle; showBottomSheet = false
