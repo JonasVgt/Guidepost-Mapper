@@ -21,6 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.jonasvgt.guidepostmapper.data.osmapi.Connection
+import com.jonasvgt.guidepostmapper.data.osmapi.GuidepostHandler
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
@@ -29,6 +31,7 @@ import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.ui.selectmapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
+import de.westnordost.osmapi.map.data.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.OverlayItem
@@ -51,6 +54,7 @@ class MainActivity : ComponentActivity() {
         val overlay = GuidepostOverlay(this)
         overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
+        val connection = Connection().apply { connect() }
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
@@ -58,7 +62,20 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
-                        FabDownloadOsmData(onClick = {})
+                        FabDownloadOsmData(onClick = {
+                            connection.fetchMapData(
+                                BoundingBox(48.8510, 2.2780, 48.8560, 2.2830),
+                                GuidepostHandler(handleGuidePost = {
+                                    overlay.addItem(
+                                        OverlayItem(
+                                            "node",
+                                            "desc",
+                                            GeoPoint(it!!.position.latitude, it.position.longitude)
+                                        )
+                                    )
+                                })
+                            )
+                        })
                         Spacer(modifier = Modifier.height(20.dp))
                         FabMapStyle(onClick = { showBottomSheet = true })
                         Spacer(modifier = Modifier.height(20.dp))
