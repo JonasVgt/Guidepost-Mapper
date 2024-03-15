@@ -48,9 +48,8 @@ class MainActivity : ComponentActivity() {
             controller.setZoom(9.5)
             controller.setCenter(GeoPoint(48.8583, 2.2944))
         }
-        val items: ArrayList<OverlayItem> = ArrayList()
-        items.add(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
-        val overlay = GuidepostOverlay(this, items)
+        val overlay = GuidepostOverlay(this)
+        overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
         setContent {
             GuidepostMapperTheme {
