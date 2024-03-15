@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.ui.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
@@ -52,6 +53,8 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
+                        FabDownloadOsmData(onClick = {})
+                        Spacer(modifier = Modifier.height(20.dp))
                         FabMapStyle(onClick = { showBottomSheet = true })
                         Spacer(modifier = Modifier.height(20.dp))
                         FabToMyPosition(onClick = {
