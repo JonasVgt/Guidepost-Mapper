@@ -4,32 +4,36 @@ import de.westnordost.osmapi.OsmConnection
 import de.westnordost.osmapi.map.MapDataApi
 import de.westnordost.osmapi.map.data.BoundingBox
 import de.westnordost.osmapi.map.handler.MapDataHandler
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class Connection {
 
 
-    private var connection : OsmConnection? = null
-    private var mapApi : MapDataApi? = null
+    private var connection: OsmConnection? = null
+    private var mapApi: MapDataApi? = null
 
 
     fun connect() {
-        if (connection != null)
-            return
+        if (connection != null) return
 
         connection = OsmConnection(
             API_URL, "GuidepostMapper", null
         )
     }
 
-    fun fetchMapData(boundingBox: BoundingBox, dataHandler: MapDataHandler){
-        if(connection == null)
-            return
+    @OptIn(DelicateCoroutinesApi::class)
+    fun fetchMapData(boundingBox: BoundingBox, dataHandler: MapDataHandler) {
+        if (connection == null) return
 
-        if(mapApi == null)
-            mapApi = MapDataApi(connection)
+        if (mapApi == null) mapApi = MapDataApi(connection)
 
-        mapApi?.getMap(boundingBox, dataHandler)
+        GlobalScope.launch(Dispatchers.IO) {
+            mapApi?.getMap(boundingBox, dataHandler)
+        }
     }
 
     companion object {
