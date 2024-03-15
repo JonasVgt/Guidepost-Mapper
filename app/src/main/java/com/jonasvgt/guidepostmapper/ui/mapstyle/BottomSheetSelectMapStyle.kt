@@ -12,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jonasvgt.guidepostmapper.osmmap.MapStyle
+import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

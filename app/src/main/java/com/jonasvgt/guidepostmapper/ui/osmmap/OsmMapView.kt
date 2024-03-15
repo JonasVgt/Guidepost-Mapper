@@ -7,7 +7,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import org.osmdroid.views.MapView
 
 @Composable
