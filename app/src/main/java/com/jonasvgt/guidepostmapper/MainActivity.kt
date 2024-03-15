@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
+import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.ui.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
@@ -30,7 +31,6 @@ import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
@@ -50,19 +50,7 @@ class MainActivity : ComponentActivity() {
         }
         val items: ArrayList<OverlayItem> = ArrayList()
         items.add(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
-        val overlay = ItemizedIconOverlay(
-            this,
-            items,
-            object : ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
-                override fun onItemSingleTapUp(index: Int, item: OverlayItem): Boolean {
-                    //do something
-                    return true
-                }
-
-                override fun onItemLongPress(index: Int, item: OverlayItem): Boolean {
-                    return false
-                }
-            })
+        val overlay = GuidepostOverlay(this, items)
         mapView.overlays.add(overlay)
         setContent {
             GuidepostMapperTheme {
