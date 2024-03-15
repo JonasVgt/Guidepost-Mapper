@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.osmmap
+package com.jonasvgt.guidepostmapper.ui.osmmap
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -7,18 +7,17 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.jonasvgt.guidepostmapper.osmmap.MapStyle
 import org.osmdroid.views.MapView
 
 @Composable
 fun OsmMapView(
-    mapView: MapView,
-    modifier: Modifier = Modifier,
-    style: MapStyle = MapStyle.DEFAULT
+    mapView: MapView, modifier: Modifier = Modifier, style: MapStyle = MapStyle.DEFAULT
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(key1 = lifecycleOwner) {
-        val observer = LifecycleEventObserver { _ , event ->
-            when(event){
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
                 Lifecycle.Event.ON_RESUME -> mapView.onResume()
                 Lifecycle.Event.ON_PAUSE -> mapView.onPause()
                 else -> {}
@@ -29,8 +28,7 @@ fun OsmMapView(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
-    AndroidView(
-        modifier = modifier,
+    AndroidView(modifier = modifier,
         factory = { _ -> mapView.apply { setTileSource(style.tileSource) } },
         update = { it.setTileSource(style.tileSource) })
 }

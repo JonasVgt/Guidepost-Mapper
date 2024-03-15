@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.MapStyle
-import com.jonasvgt.guidepostmapper.osmmap.OsmMapView
+import com.jonasvgt.guidepostmapper.ui.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.ui.mapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.ui.mapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
