@@ -31,7 +31,6 @@ import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.ui.selectmapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
-import de.westnordost.osmapi.map.data.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.OverlayItem
@@ -63,18 +62,22 @@ class MainActivity : ComponentActivity() {
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
                         FabDownloadOsmData(onClick = {
-                            connection.fetchMapData(
-                                BoundingBox(48.8510, 2.2780, 48.8560, 2.2830),
-                                GuidepostHandler(handleGuidePost = {
-                                    overlay.addItem(
-                                        OverlayItem(
-                                            "node",
-                                            "desc",
-                                            GeoPoint(it!!.position.latitude, it.position.longitude)
+                            val location = mapView.mapCenter
+                            if(location != null){
+                                connection.fetchMapData(
+                                    location,
+                                    GuidepostHandler(handleGuidePost = {
+                                        overlay.addItem(
+                                            OverlayItem(
+                                                "node",
+                                                "desc",
+                                                GeoPoint(it!!.position.latitude, it.position.longitude)
+                                            )
                                         )
-                                    )
-                                })
-                            )
+                                    })
+                                )
+                            }
+
                         })
                         Spacer(modifier = Modifier.height(20.dp))
                         FabMapStyle(onClick = { showBottomSheet = true })
