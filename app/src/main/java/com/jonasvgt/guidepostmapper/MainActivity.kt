@@ -21,8 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApi
-import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.GuidepostHandler
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApiDataSource
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
@@ -53,7 +52,7 @@ class MainActivity : ComponentActivity() {
         val overlay = GuidepostOverlay(this)
         overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
-        val osmApi = OsmApi().apply { connect() }
+        val osmApiDataSource = OsmApiDataSource()
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
@@ -64,20 +63,16 @@ class MainActivity : ComponentActivity() {
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
                             if (location != null) {
-                                osmApi.fetchMapData(
-                                    location, GuidepostHandler(handleGuidePost = {
-                                        overlay.addItem(
-                                            OverlayItem(
-                                                "node",
-                                                "desc",
-                                                GeoPoint(
-                                                    it!!.position.latitude,
-                                                    it.position.longitude
-                                                )
+                                osmApiDataSource.fetchMapData(location, handleGuidePost = {
+                                    overlay.addItem(
+                                        OverlayItem(
+                                            "node", "desc", GeoPoint(
+                                                it!!.position.latitude, it.position.longitude
                                             )
                                         )
-                                    }, handleDestinationSign = {})
-                                )
+                                    )
+                                }, handleDestinationSign = {})
+
                             }
 
                         })
