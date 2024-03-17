@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.data.osmapi
+package com.jonasvgt.guidepostmapper.osmmap.data.osmapi
 
 import android.location.Location
 import de.westnordost.osmapi.OsmConnection

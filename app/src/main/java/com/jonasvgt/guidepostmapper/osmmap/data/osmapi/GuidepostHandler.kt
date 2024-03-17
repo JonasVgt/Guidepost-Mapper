@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.data.osmapi
+package com.jonasvgt.guidepostmapper.osmmap.data.osmapi
 
 import de.westnordost.osmapi.map.data.BoundingBox
 import de.westnordost.osmapi.map.data.Node

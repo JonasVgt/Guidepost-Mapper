@@ -21,8 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.jonasvgt.guidepostmapper.data.osmapi.Connection
-import com.jonasvgt.guidepostmapper.data.osmapi.GuidepostHandler
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.Connection
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.GuidepostHandler
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
