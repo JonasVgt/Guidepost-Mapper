@@ -6,7 +6,7 @@ import de.westnordost.osmapi.map.data.Relation
 import de.westnordost.osmapi.map.data.Way
 import de.westnordost.osmapi.map.handler.MapDataHandler
 
-class GuidepostHandler(private val handleGuidePost: (Node?) -> Unit) : MapDataHandler {
+class GuidepostHandler(private val handleGuidePost: (Node?) -> Unit, private val handleDestinationSign: (Relation?) -> Unit) : MapDataHandler {
 
     override fun handle(bounds: BoundingBox?) {}
 
@@ -18,7 +18,11 @@ class GuidepostHandler(private val handleGuidePost: (Node?) -> Unit) : MapDataHa
 
     override fun handle(way: Way?) {}
 
-    override fun handle(relation: Relation?) {}
+    override fun handle(relation: Relation?) {
+        if (relation?.tags?.get("type") == "destination_sign"){
+            handleDestinationSign(relation)
+        }
+    }
 
 
 }

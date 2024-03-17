@@ -63,18 +63,20 @@ class MainActivity : ComponentActivity() {
                     Column {
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
-                            if(location != null){
+                            if (location != null) {
                                 connection.fetchMapData(
-                                    location,
-                                    GuidepostHandler(handleGuidePost = {
+                                    location, GuidepostHandler(handleGuidePost = {
                                         overlay.addItem(
                                             OverlayItem(
                                                 "node",
                                                 "desc",
-                                                GeoPoint(it!!.position.latitude, it.position.longitude)
+                                                GeoPoint(
+                                                    it!!.position.latitude,
+                                                    it.position.longitude
+                                                )
                                             )
                                         )
-                                    })
+                                    }, handleDestinationSign = {})
                                 )
                             }
 
