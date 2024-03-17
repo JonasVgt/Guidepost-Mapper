@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApiDataSource
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmMapRepository
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.ui.osmmap.MapStyle
@@ -52,7 +53,16 @@ class MainActivity : ComponentActivity() {
         val overlay = GuidepostOverlay(this)
         overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
-        val osmApiDataSource = OsmApiDataSource()
+        val osmMapRepository = OsmMapRepository(OsmApiDataSource()) { it ->
+            overlay.removeAllItems()
+            overlay.addItems(it.getGuideposts().map {
+                OverlayItem(
+                    "node", "desc", GeoPoint(
+                        it.position.latitude, it.position.longitude
+                    )
+                )
+            })
+        }
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
@@ -63,16 +73,7 @@ class MainActivity : ComponentActivity() {
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
                             if (location != null) {
-                                osmApiDataSource.fetchMapData(location, handleGuidePost = {
-                                    overlay.addItem(
-                                        OverlayItem(
-                                            "node", "desc", GeoPoint(
-                                                it!!.position.latitude, it.position.longitude
-                                            )
-                                        )
-                                    )
-                                }, handleDestinationSign = {})
-
+                                osmMapRepository.downloadMapDataAt(location)
                             }
 
                         })
