@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.Connection
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApi
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.GuidepostHandler
 import com.jonasvgt.guidepostmapper.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.ui.osmmap.GuidepostOverlay
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
         val overlay = GuidepostOverlay(this)
         overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
-        val connection = Connection().apply { connect() }
+        val osmApi = OsmApi().apply { connect() }
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
                             if (location != null) {
-                                connection.fetchMapData(
+                                osmApi.fetchMapData(
                                     location, GuidepostHandler(handleGuidePost = {
                                         overlay.addItem(
                                             OverlayItem(

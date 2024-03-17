@@ -13,7 +13,7 @@ import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.GeoPoint
 
 
-class Connection {
+class OsmApi {
 
 
     private var connection: OsmConnection? = null
