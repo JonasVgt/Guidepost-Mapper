@@ -51,7 +51,6 @@ class MainActivity : ComponentActivity() {
             controller.setCenter(GeoPoint(48.8583, 2.2944))
         }
         val overlay = GuidepostOverlay(this)
-        overlay.addItem(OverlayItem("Hello World", "Description", GeoPoint(48.8583, 2.2944)))
         mapView.overlays.add(overlay)
         val osmMapRepository = OsmMapRepository(OsmApiDataSource()) { it ->
             overlay.removeAllItems()
