@@ -31,6 +31,10 @@ import com.jonasvgt.guidepostmapper.ui.selectmapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.ui.selectmapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.ui.tomyposition.FabToMyPosition
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.OverlayItem
@@ -38,7 +42,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         org.osmdroid.config.Configuration.getInstance().userAgentValue =
@@ -52,16 +56,21 @@ class MainActivity : ComponentActivity() {
         }
         val overlay = GuidepostOverlay(this)
         mapView.overlays.add(overlay)
-        val osmMapRepository = OsmMapRepository(OsmApiDataSource()) { it ->
-            overlay.removeAllItems()
-            overlay.addItems(it.getGuideposts().map {
-                OverlayItem(
-                    "node", "desc", GeoPoint(
-                        it.position.latitude, it.position.longitude
+        val osmMapRepository = OsmMapRepository(OsmApiDataSource())
+
+        GlobalScope.launch {
+            osmMapRepository.guidepostFlow.collectLatest { it ->
+                overlay.removeAllItems()
+                overlay.addItems(it.values.map { node ->
+                    OverlayItem(
+                        "node", "desc", GeoPoint(
+                            node.position.latitude, node.position.longitude
+                        )
                     )
-                )
-            })
+                })
+            }
         }
+
         setContent {
             GuidepostMapperTheme {
                 var showBottomSheet by remember { mutableStateOf(false) }
