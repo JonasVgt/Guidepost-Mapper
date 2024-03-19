@@ -23,8 +23,10 @@ class OsmMapRepository(
     private val _relations: MutableStateFlow<Map<Long, Relation>> = MutableStateFlow(emptyMap())
     val relations = _relations.asStateFlow()
 
-    val guidepostFlow =
-        nodes.map { value -> value.filter { entry -> entry.value.tags["information"] == "guidepost" } }
+    val guidepostFlow = nodes.map { map ->
+        map.filter { entry -> entry.value.tags["information"] == "guidepost" }
+            .mapValues { entry -> Guidepost(entry.value) }
+    }
 
     fun downloadMapDataAt(geoPoint: IGeoPoint) {
         val dataHandler = object : MapDataHandler {

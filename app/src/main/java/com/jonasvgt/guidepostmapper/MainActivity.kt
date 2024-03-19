@@ -67,10 +67,11 @@ class MainActivity : ComponentActivity() {
         GlobalScope.launch {
             osmMapRepository.guidepostFlow.collectLatest { it ->
                 overlay.removeAllItems()
-                overlay.addItems(it.values.map { node ->
+                overlay.addItems(it.map { guidepost ->
                     GuidepostOverlayItem(
-                        node.id, GeoPoint(
-                            node.position.latitude, node.position.longitude
+                        guidepost.value.node.id, GeoPoint(
+                            guidepost.value.node.position.latitude,
+                            guidepost.value.node.position.longitude
                         )
                     )
                 })

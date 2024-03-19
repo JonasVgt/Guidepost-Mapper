@@ -1,3 +1,5 @@
 package com.jonasvgt.guidepostmapper.osmmap.data.osmapi
 
-class Guidepost(val name: String, val elevation: Double)
+import de.westnordost.osmapi.map.data.Node
+
+data class Guidepost(val node: Node)
