@@ -5,7 +5,10 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.OverlayItem
 
 class GuidepostOverlay(context: Context, items: ArrayList<OverlayItem> = ArrayList()) :
-    ItemizedIconOverlay<OverlayItem>(context, items, object : OnItemGestureListener<OverlayItem> {
+    ItemizedIconOverlay<OverlayItem>(context, items, onItemGestureListener)
+
+private val onItemGestureListener =
+    object : ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
         override fun onItemSingleTapUp(index: Int, item: OverlayItem): Boolean {
             return false
         }
@@ -13,4 +16,4 @@ class GuidepostOverlay(context: Context, items: ArrayList<OverlayItem> = ArrayLi
         override fun onItemLongPress(index: Int, item: OverlayItem): Boolean {
             return false
         }
-    })
+    }
