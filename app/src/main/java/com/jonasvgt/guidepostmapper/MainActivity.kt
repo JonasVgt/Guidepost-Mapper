@@ -28,25 +28,25 @@ import com.jonasvgt.guidepostmapper.osmmap.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.osmmap.ui.editor.BottomSheetGuidepostEditor
 import com.jonasvgt.guidepostmapper.osmmap.ui.editor.GuidepostEditorViewModel
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.GuidepostOverlay
+import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.GuidepostOverlayItem
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.osmmap.ui.selectmapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.osmmap.ui.selectmapstyle.FabMapStyle
-import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import com.jonasvgt.guidepostmapper.osmmap.ui.tomyposition.FabToMyPosition
+import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.OverlayItem
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
 
-    private val guidepostEditorViewModel : GuidepostEditorViewModel by viewModels()
+    private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels()
 
     @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,8 +68,8 @@ class MainActivity : ComponentActivity() {
             osmMapRepository.guidepostFlow.collectLatest { it ->
                 overlay.removeAllItems()
                 overlay.addItems(it.values.map { node ->
-                    OverlayItem(
-                        "node", "desc", GeoPoint(
+                    GuidepostOverlayItem(
+                        node.id, GeoPoint(
                             node.position.latitude, node.position.longitude
                         )
                     )
