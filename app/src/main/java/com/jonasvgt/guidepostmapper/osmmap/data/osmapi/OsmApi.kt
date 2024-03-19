@@ -16,26 +16,35 @@ import org.osmdroid.util.GeoPoint
 class OsmApi {
 
 
-    private var connection: OsmConnection? = null
-    private var mapApi: MapDataApi? = null
+    private var connectionDown: OsmConnection? = null
+    private var connectionUp: OsmConnection? = null
+
+    private var mapApiDown: MapDataApi? = null
 
 
     fun connect() {
-        if (connection != null) return
+        if (connectionDown == null){
+            connectionDown = OsmConnection(
+                API_URL_DOWN, "GuidepostMapper", null
+            )
+        }
 
-        connection = OsmConnection(
-            API_URL, "GuidepostMapper", null
-        )
+        if (connectionUp == null){
+            connectionUp = OsmConnection(
+                API_URL_UP, "GuidepostMapper", null
+            )
+        }
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     fun fetchMapData(boundingBox: BoundingBox, dataHandler: MapDataHandler) {
-        if (connection == null) return
+        if (connectionDown == null) return
 
-        if (mapApi == null) mapApi = MapDataApi(connection)
+        if (mapApiDown == null) mapApiDown = MapDataApi(connectionDown)
 
         GlobalScope.launch(Dispatchers.IO) {
-            mapApi?.getMap(boundingBox, dataHandler)
+            mapApiDown?.getMap(boundingBox, dataHandler)
         }
     }
 
@@ -54,6 +63,7 @@ class OsmApi {
     }
 
     companion object {
-        val API_URL = "https://master.apis.dev.openstreetmap.org/api/0.6/"
+        val API_URL_DOWN = "https://openstreetmap.org/api/0.6/"
+        val API_URL_UP = "https://master.apis.dev.openstreetmap.org/api/0.6/"
     }
 }
