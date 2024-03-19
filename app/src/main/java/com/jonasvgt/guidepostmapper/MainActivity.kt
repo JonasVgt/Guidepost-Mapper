@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
             controller.setZoom(9.5)
             controller.setCenter(GeoPoint(48.8583, 2.2944))
         }
-        val overlay = GuidepostOverlay(this)
+        val overlay = GuidepostOverlay(this, onOpenEditor = { guidepostEditorViewModel.show() })
         mapView.overlays.add(overlay)
         val osmMapRepository = OsmMapRepository(OsmApiDataSource())
 
