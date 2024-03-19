@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class GuidepostEditorViewModel : ViewModel() {
 
-    val _visible = MutableStateFlow(false)
+    private val _visible = MutableStateFlow(false)
     val visible = _visible.asStateFlow()
 
     fun show() {
