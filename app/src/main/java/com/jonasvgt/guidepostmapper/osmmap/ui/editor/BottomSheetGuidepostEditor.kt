@@ -16,14 +16,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.Guidepost
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheetGuidepostEditor(show: Boolean, guidepost: Guidepost, onDismissRequest: () -> Unit) {
-    if (show) {
+fun BottomSheetGuidepostEditor(viewModel: GuidepostEditorViewModel) {
+    if (viewModel.show) {
         ModalBottomSheet(
-            onDismissRequest = onDismissRequest,
+            onDismissRequest = {},
         ) {
             Column {
                 NameTextField(

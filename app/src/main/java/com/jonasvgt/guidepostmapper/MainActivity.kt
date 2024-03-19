@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,8 @@ import androidx.core.content.ContextCompat
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApiDataSource
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmMapRepository
 import com.jonasvgt.guidepostmapper.osmmap.ui.downloadosmdata.FabDownloadOsmData
+import com.jonasvgt.guidepostmapper.osmmap.ui.editor.BottomSheetGuidepostEditor
+import com.jonasvgt.guidepostmapper.osmmap.ui.editor.GuidepostEditorViewModel
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.MapStyle
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.OsmMapView
@@ -42,6 +45,9 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
+
+    private val guidepostEditorViewModel : GuidepostEditorViewModel by viewModels()
+
     @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +112,7 @@ class MainActivity : ComponentActivity() {
                         onMapStyleSelected = { newStyle ->
                             mapStyle = newStyle; showBottomSheet = false
                         })
+                    BottomSheetGuidepostEditor(viewModel = guidepostEditorViewModel)
                 }
             }
         }
