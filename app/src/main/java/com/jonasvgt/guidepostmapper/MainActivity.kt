@@ -27,6 +27,7 @@ import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmMapRepository
 import com.jonasvgt.guidepostmapper.osmmap.ui.downloadosmdata.FabDownloadOsmData
 import com.jonasvgt.guidepostmapper.osmmap.ui.editor.BottomSheetGuidepostEditor
 import com.jonasvgt.guidepostmapper.osmmap.ui.editor.GuidepostEditorViewModel
+import com.jonasvgt.guidepostmapper.osmmap.ui.editor.GuidepostEditorViewModelFactory
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.GuidepostOverlay
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.GuidepostOverlayItem
 import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.MapStyle
@@ -46,7 +47,8 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MainActivity : ComponentActivity() {
 
-    private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels()
+    private val osmMapRepository = OsmMapRepository(OsmApiDataSource())
+    private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels {GuidepostEditorViewModelFactory(osmMapRepository)}
 
     @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +62,8 @@ class MainActivity : ComponentActivity() {
             controller.setZoom(9.5)
             controller.setCenter(GeoPoint(48.8583, 2.2944))
         }
-        val overlay = GuidepostOverlay(this, onOpenEditor = { guidepostEditorViewModel.show() })
+        val overlay = GuidepostOverlay(this, onOpenEditor = { id -> guidepostEditorViewModel.show(id) })
         mapView.overlays.add(overlay)
-        val osmMapRepository = OsmMapRepository(OsmApiDataSource())
 
         GlobalScope.launch {
             osmMapRepository.guidepostFlow.collectLatest { it ->

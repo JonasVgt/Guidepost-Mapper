@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetGuidepostEditor(viewModel: GuidepostEditorViewModel) {
-    val visible by viewModel.visible.collectAsState()
+    val editedNode by viewModel.editedNode.collectAsState()
 
-    if (visible) {
+    if (editedNode != null) {
         ModalBottomSheet(
             onDismissRequest = { viewModel.hide() },
         ) {
