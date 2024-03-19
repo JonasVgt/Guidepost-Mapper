@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.ui.osmmap
+package com.jonasvgt.guidepostmapper.osmmap.ui.osmmap
 
 import android.content.Context
 import org.osmdroid.views.overlay.ItemizedIconOverlay

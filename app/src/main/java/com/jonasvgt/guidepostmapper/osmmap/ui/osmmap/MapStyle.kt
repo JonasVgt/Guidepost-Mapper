@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.ui.osmmap
+package com.jonasvgt.guidepostmapper.osmmap.ui.osmmap
 
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

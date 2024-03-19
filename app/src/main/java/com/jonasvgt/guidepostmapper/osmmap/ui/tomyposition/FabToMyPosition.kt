@@ -1,4 +1,4 @@
-package com.jonasvgt.guidepostmapper.ui.tomyposition
+package com.jonasvgt.guidepostmapper.osmmap.ui.tomyposition
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
