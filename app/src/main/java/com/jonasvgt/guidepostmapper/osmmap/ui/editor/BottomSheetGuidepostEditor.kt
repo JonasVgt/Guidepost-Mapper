@@ -12,9 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -23,46 +20,50 @@ import androidx.compose.ui.unit.dp
 fun BottomSheetGuidepostEditor(viewModel: GuidepostEditorViewModel) {
     val editedNode by viewModel.editedNode.collectAsState()
 
-    if (editedNode != null) {
-        ModalBottomSheet(
-            onDismissRequest = { viewModel.hide() },
-        ) {
-            Column {
-                NameTextField(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxWidth()
-                )
-                ElevationTextField(
-                    modifier = Modifier
-                        .padding(24.dp)
-                        .fillMaxWidth()
-                )
+    if (editedNode == null) {
+        return
+    }
 
-            }
+    ModalBottomSheet(
+        onDismissRequest = { viewModel.hide() },
+    ) {
+        Column {
+            NameTextField(editedNode!!.name.orEmpty(),
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth(),
+                onNameChange = {})
+            ElevationTextField(editedNode!!.elevation.orEmpty(),
+                modifier = Modifier
+                    .padding(24.dp)
+                    .fillMaxWidth(),
+                onElevationChange = {})
 
-            Spacer(modifier = Modifier.height(40.dp))
         }
+
+        Spacer(modifier = Modifier.height(40.dp))
     }
 
 }
 
 @Composable
-private fun NameTextField(modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+private fun NameTextField(
+    name: String, modifier: Modifier = Modifier, onNameChange: (String) -> Unit
+) {
 
     OutlinedTextField(modifier = modifier,
-        value = text,
-        onValueChange = { text = it },
+        value = name,
+        onValueChange = onNameChange,
         label = { Text("Name") })
 }
 
 @Composable
-private fun ElevationTextField(modifier: Modifier = Modifier) {
-    var text by remember { mutableStateOf("") }
+private fun ElevationTextField(
+    elevation: String, modifier: Modifier = Modifier, onElevationChange: (String) -> Unit
+) {
 
     OutlinedTextField(modifier = modifier,
-        value = text,
-        onValueChange = { text = it },
+        value = elevation,
+        onValueChange = onElevationChange,
         label = { Text("Elevation") })
 }
