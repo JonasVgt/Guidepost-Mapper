@@ -24,8 +24,9 @@ class OsmMapRepository(
     val relations = _relations.asStateFlow()
 
     val guidepostFlow = nodes.map { map ->
-        map.filter { entry -> entry.value.tags["information"] == "guidepost" }
-            .mapValues { entry -> Guidepost(entry.value) }
+        map.filter { entry -> entry.value.tags["information"] == "guidepost" }.mapValues { entry ->
+            Guidepost(entry.value)
+        }
     }
 
     fun downloadMapDataAt(geoPoint: IGeoPoint) {

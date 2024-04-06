@@ -48,7 +48,11 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 class MainActivity : ComponentActivity() {
 
     private val osmMapRepository = OsmMapRepository(OsmApiDataSource())
-    private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels {GuidepostEditorViewModelFactory(osmMapRepository)}
+    private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels {
+        GuidepostEditorViewModelFactory(
+            osmMapRepository
+        )
+    }
 
     @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +74,8 @@ class MainActivity : ComponentActivity() {
                 overlay.removeAllItems()
                 overlay.addItems(it.map { guidepost ->
                     GuidepostOverlayItem(
-                        guidepost.value.node.id, GeoPoint(
-                            guidepost.value.node.position.latitude,
-                            guidepost.value.node.position.longitude
+                        guidepost.value.id, GeoPoint(
+                            guidepost.value.position.latitude, guidepost.value.position.longitude
                         )
                     )
                 })
