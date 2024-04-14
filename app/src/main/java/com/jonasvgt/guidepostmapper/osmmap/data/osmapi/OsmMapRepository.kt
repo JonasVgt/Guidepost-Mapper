@@ -22,6 +22,11 @@ class OsmMapRepository(
         nodesObservers.forEach { it(_nodes) }
     }
 
+    fun updateNode(node: Node) {
+        _nodes[node.id] = node
+        notifyNodeObservers()
+    }
+
     fun downloadMapDataAt(geoPoint: IGeoPoint) {
         val dataHandler = object : MapDataHandler {
             override fun handle(bounds: BoundingBox?) {}

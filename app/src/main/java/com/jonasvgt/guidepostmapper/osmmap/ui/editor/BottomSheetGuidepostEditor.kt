@@ -32,7 +32,7 @@ fun BottomSheetGuidepostEditor(viewModel: GuidepostEditorViewModel) {
                 modifier = Modifier
                     .padding(24.dp)
                     .fillMaxWidth(),
-                onNameChange = {})
+                onNameChange = { newName -> viewModel.updateName(newName) })
             ElevationTextField(editedNode!!.elevation.orEmpty(),
                 modifier = Modifier
                     .padding(24.dp)
@@ -51,7 +51,8 @@ private fun NameTextField(
     name: String, modifier: Modifier = Modifier, onNameChange: (String) -> Unit
 ) {
 
-    OutlinedTextField(modifier = modifier,
+    OutlinedTextField(
+        modifier = modifier,
         value = name,
         onValueChange = onNameChange,
         label = { Text("Name") })
