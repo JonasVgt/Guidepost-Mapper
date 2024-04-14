@@ -2,10 +2,10 @@ package com.jonasvgt.guidepostmapper.osmmap.ui.editor
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmMapRepository
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.GuidepostRepository
 
 class GuidepostEditorViewModelFactory(
-    private val mParam: OsmMapRepository
+    private val mParam: GuidepostRepository
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

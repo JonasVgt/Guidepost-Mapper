@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.GuidepostRepository
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmApiDataSource
 import com.jonasvgt.guidepostmapper.osmmap.data.osmapi.OsmMapRepository
 import com.jonasvgt.guidepostmapper.osmmap.ui.downloadosmdata.FabDownloadOsmData
@@ -48,9 +49,10 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 class MainActivity : ComponentActivity() {
 
     private val osmMapRepository = OsmMapRepository(OsmApiDataSource())
+    private val guidepostRepository = GuidepostRepository(osmMapRepository)
     private val guidepostEditorViewModel: GuidepostEditorViewModel by viewModels {
         GuidepostEditorViewModelFactory(
-            osmMapRepository
+            guidepostRepository
         )
     }
 
@@ -70,7 +72,7 @@ class MainActivity : ComponentActivity() {
         mapView.overlays.add(overlay)
 
         GlobalScope.launch {
-            osmMapRepository.guidepostFlow.collectLatest { it ->
+            guidepostRepository.guideposts.collectLatest { it ->
                 overlay.removeAllItems()
                 overlay.addItems(it.map { guidepost ->
                     GuidepostOverlayItem(
