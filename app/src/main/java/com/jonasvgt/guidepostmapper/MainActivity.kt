@@ -36,6 +36,7 @@ import com.jonasvgt.guidepostmapper.osmmap.ui.osmmap.OsmMapView
 import com.jonasvgt.guidepostmapper.osmmap.ui.selectmapstyle.BottomSheetSelectMapStyle
 import com.jonasvgt.guidepostmapper.osmmap.ui.selectmapstyle.FabMapStyle
 import com.jonasvgt.guidepostmapper.osmmap.ui.tomyposition.FabToMyPosition
+import com.jonasvgt.guidepostmapper.osmmap.ui.upload.FabUploadChanges
 import com.jonasvgt.guidepostmapper.ui.theme.GuidepostMapperTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -91,6 +92,8 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
+                        FabUploadChanges (onClick = {})
+                        Spacer(modifier = Modifier.height(20.dp))
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
                             if (location != null) {
