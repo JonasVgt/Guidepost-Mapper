@@ -11,11 +11,15 @@ class OsmMapRepository(
     private val dataSource: OsmApiDataSource
 ) {
 
-    private val nodes: MutableMap<Long, Node> = mutableMapOf()
+    private val _nodes: MutableMap<Long, Node> = mutableMapOf()
+    val nodes: Map<Long, Node>
+        get() {
+            return _nodes.toMap()
+        }
     val nodesObservers = mutableListOf<(Map<Long, Node>) -> Unit>()
 
     private fun notifyNodeObservers() {
-        nodesObservers.forEach { it(nodes) }
+        nodesObservers.forEach { it(_nodes) }
     }
 
     fun downloadMapDataAt(geoPoint: IGeoPoint) {
@@ -24,7 +28,7 @@ class OsmMapRepository(
 
             override fun handle(node: Node?) {
                 if (node == null) return
-                nodes[node.id] = node
+                _nodes[node.id] = node
                 notifyNodeObservers()
                 //_nodes.update { nodes -> nodes.toMutableMap().apply { put(node.id, node) } }
             }
