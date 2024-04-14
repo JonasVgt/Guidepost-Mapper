@@ -37,7 +37,7 @@ fun BottomSheetGuidepostEditor(viewModel: GuidepostEditorViewModel) {
                 modifier = Modifier
                     .padding(24.dp)
                     .fillMaxWidth(),
-                onElevationChange = {})
+                onElevationChange = {newElevation -> viewModel.updateElevation(newElevation)})
 
         }
 

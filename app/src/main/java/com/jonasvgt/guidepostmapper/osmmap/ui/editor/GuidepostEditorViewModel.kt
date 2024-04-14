@@ -39,5 +39,16 @@ class GuidepostEditorViewModel(private val guidepostRepository: GuidepostReposit
         )
     }
 
+    fun updateElevation(newElevation: String) {
+        val guidepost: Guidepost = editedNode.value ?: return
+        guidepostRepository.updateGuidepost(
+            Guidepost(
+                guidepost.id,
+                guidepost.name,
+                newElevation,
+                guidepost.position
+            )
+        )
+    }
 
 }
