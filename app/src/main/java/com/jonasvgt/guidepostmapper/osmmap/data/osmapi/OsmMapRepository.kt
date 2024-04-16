@@ -54,4 +54,9 @@ class OsmMapRepository(
         dataSource.fetchMapData(geoPoint, dataHandler)
     }
 
+
+    fun uploadEdits() {
+        val changesetId = dataSource.openChangeset()
+        dataSource.uploadChangeset(changesetId, nodes.values)
+    }
 }

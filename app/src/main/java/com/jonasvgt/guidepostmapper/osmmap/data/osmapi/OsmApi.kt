@@ -4,13 +4,16 @@ import android.location.Location
 import de.westnordost.osmapi.OsmConnection
 import de.westnordost.osmapi.map.MapDataApi
 import de.westnordost.osmapi.map.data.BoundingBox
+import de.westnordost.osmapi.map.data.Element
 import de.westnordost.osmapi.map.handler.MapDataHandler
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.osmdroid.api.IGeoPoint
 import org.osmdroid.util.GeoPoint
+import java.util.Locale
 
 
 class OsmApi {
@@ -20,6 +23,7 @@ class OsmApi {
     private var connectionUp: OsmConnection? = null
 
     private var mapApiDown: MapDataApi? = null
+    private var mapApiUp: MapDataApi? = null
 
 
     fun connect() {
@@ -60,6 +64,26 @@ class OsmApi {
             geoPoint.longitude + size * 0.5
         )
         fetchMapData(boundingBox, dataHandler)
+    }
+
+    suspend fun openChangeset() : Long = withContext(Dispatchers.IO) {
+        if (mapApiUp == null) mapApiUp = MapDataApi(connectionUp)
+
+        mapApiUp!!.openChangeset(
+            mapOf(
+                "comment" to "test comment",
+                "created_by" to "GuidepostMapper",
+                "locale" to Locale.getDefault().toLanguageTag(),
+                "source" to "none:)"
+            )
+        )
+    }
+
+    fun uploadChanges(changesetId : Long, elements : Iterable<Element>){
+        if (mapApiUp == null) mapApiUp = MapDataApi(connectionUp)
+        GlobalScope.launch(Dispatchers.IO) {
+            mapApiUp!!.uploadChanges(changesetId, elements) {}
+        }
     }
 
     companion object {

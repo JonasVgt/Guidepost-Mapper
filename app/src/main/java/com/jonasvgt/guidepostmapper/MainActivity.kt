@@ -92,7 +92,7 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(floatingActionButtonPosition = FabPosition.End, floatingActionButton = {
                     Column {
-                        FabUploadChanges (onClick = {})
+                        FabUploadChanges (onClick = {osmMapRepository.uploadEdits()})
                         Spacer(modifier = Modifier.height(20.dp))
                         FabDownloadOsmData(onClick = {
                             val location = mapView.mapCenter
